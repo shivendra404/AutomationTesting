@@ -30,14 +30,14 @@ public class TS033 extends BaseClass {
 
 
 	private ProductPagePOJO productPagePojo;
-	
-	
+
+
 	@Parameters("browser")
 	@BeforeMethod
 	public void openBrowser(@Optional("Chrome")String browser) throws InterruptedException {
 		System.out.println(browser);
 		launchBrowser( browser);
-//		windowMaximize();
+		//		windowMaximize();
 		launchUrl("https://awesomeqa.com/ui/");
 		Thread.sleep(2000);
 		productPagePojo = new ProductPagePOJO(driver);
@@ -45,44 +45,78 @@ public class TS033 extends BaseClass {
 
 	@AfterMethod
 	public void closeBrowser() {
-//				driver.quit();
+		//				driver.quit();
 	}
 
 
-	@Test
+	//	@Test
 	public void TC001() throws InterruptedException {
-	
-	
+
+
 		List<WebElement> navBarElements = productPagePojo.getNavBarElements();
-		System.out.println(navBarElements);
-		 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		// Loop through each dropdown element
-		  for (WebElement toggle : navBarElements) {
-		        toggle.click();
+		for (WebElement toggle : navBarElements) {
+			toggle.click();
 
-		        // Wait for the see-all link to be present in this dropdown
-		        WebElement seeAllLink = wait.until(ExpectedConditions.elementToBeClickable(
-		            toggle.findElement(By.xpath("../div/a[contains(@class, 'see-all')]"))
-		        ));
+			// Wait for the see-all link to be present in this dropdown
+			WebElement seeAllLink = wait.until(ExpectedConditions.elementToBeClickable(
+					toggle.findElement(By.xpath("../div/a[contains(@class, 'see-all')]"))
+					));
 
-		        seeAllLink.click();
-		        List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-		        	    By.className("product-thumb")
-		        	));
-		        System.out.println(products.size());
-		        Assert.assertTrue(products.size()>0);
+			seeAllLink.click();
+			List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+					By.className("product-thumb")
+					));
+			System.out.println(products.size());
+			Assert.assertTrue(products.size()>0);
 
-		        // If it navigates, you may want to return or reload the original page here
-		        driver.navigate().back();
-		    }
-		
+			// If it navigates, you may want to return or reload the original page here
+			driver.navigate().back();
+		}
+
 	}
-	
-	
-	@Ignore
+
+
+	//	@Ignore
 	@Test
-	public void TC008() {
+	public void TC008() throws InterruptedException {
 		// Test: Check if clicking on a product image navigates to the product detail page.
+
+		List<WebElement> navBarElements = productPagePojo.getNavBarElements();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+		navBarElements.get(0).click();
+
+		// Wait for the see-all link to be present in this dropdown
+		WebElement seeAllLink = wait.until(ExpectedConditions.elementToBeClickable(
+				navBarElements.get(0).findElement(By.xpath("../div/a[contains(@class, 'see-all')]"))
+				));
+
+		seeAllLink.click();
+		List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.className("product-thumb")
+				));
+
+		for (WebElement product : products) {
+			WebElement image = wait.until(ExpectedConditions.elementToBeClickable(
+					product.findElement(By.xpath(".//div[contains(@class, 'image')]"))
+					));
+			image.click();
+        	Thread.sleep(1000);
+			String currentUrl = driver.getCurrentUrl();
+			Assert.assertTrue(currentUrl.contains("https://awesomeqa.com/ui/index.php?route=product/product&path=20"));
+			Thread.sleep(1000);
+			driver.navigate().back();
+
+		}
+
+
+		
+
 	}
 
 

@@ -3,22 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="org.kgisl.tests.TS031">
+      <class name="org.kgisl.tests.TS033">
         <methods>
-          <include name="closeBrowser"/>
-          <include name="TC024"/>
-          <include name="TC013"/>
-          <include name="TC023"/>
-          <include name="TC012"/>
-          <include name="TC011"/>
           <include name="openBrowser"/>
-          <include name="TC018"/>
-          <include name="TC017"/>
-          <include name="TC021"/>
-          <include name="TC010"/>
-          <include name="TC020"/>
+          <include name="TC008"/>
+          <include name="closeBrowser"/>
         </methods>
-      </class> <!-- org.kgisl.tests.TS031 -->
+      </class> <!-- org.kgisl.tests.TS033 -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
