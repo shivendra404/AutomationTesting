@@ -1,5 +1,6 @@
 package org.kgisl.tests;
 
+import org.kgisl.POJO.ProductPagePOJO;
 import org.kgisl.POJO.RegisterPOJO;
 import org.kgisl.utils.BaseClass;
 import org.kgisl.utils.TestListener;
@@ -9,15 +10,22 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 
 @Listeners(TestListener.class)
 public class TS032 extends BaseClass {
+
 	private RegisterPOJO regPojo;
+	
+	
+	@Parameters("browser")
 	@BeforeMethod
-	public void openBrowser() throws InterruptedException {
-		launchBrowser();
+	public void openBrowser(@Optional("Chrome")String browser) throws InterruptedException {
+		
+		launchBrowser( browser);
 		windowMaximize();
 		launchUrl("https://awesomeqa.com/ui/");
 		WebElement myAccount = driver.findElement(By.xpath("//span[@class= \"caret\"]"));

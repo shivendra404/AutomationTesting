@@ -17,9 +17,9 @@ public class ProductPagePOJO extends BaseClass {
 	public ProductPagePOJO(WebDriver driver) {
 		PageFactory.initElements(driver, this);
 	}
-	@FindBy(xpath = "//a[@class='dropdown-toggle' and @data-toggle='dropdown']")
+	@FindBy(xpath = "//ul[contains(@class, 'nav') and contains(@class, 'navbar-nav')]//a[@class='dropdown-toggle' and @data-toggle='dropdown']")
 	private List<WebElement> navBarElements;
-	
+
 	@FindBy(id = "input-sort")
 	private WebElement SortByMenu;
 
