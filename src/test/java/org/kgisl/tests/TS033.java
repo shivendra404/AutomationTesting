@@ -2,6 +2,8 @@ package org.kgisl.tests;
 
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class TS033 extends BaseClass {
 	}
 
 
+	@Ignore
 	//	@Test
 	public void TC001() throws InterruptedException {
 
@@ -78,10 +81,55 @@ public class TS033 extends BaseClass {
 
 	}
 
-
 	//	@Ignore
 	@Test
-	public void TC008() throws InterruptedException {
+	public void TC008() {
+
+		List<WebElement> navBarElements = productPagePojo.getNavBarElements();
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+
+		navBarElements.get(0).click();
+
+		// Wait for the see-all link to be present in this dropdown
+		WebElement seeAllLink = wait.until(ExpectedConditions.elementToBeClickable(
+				navBarElements.get(0).findElement(By.xpath("../div/a[contains(@class, 'see-all')]"))
+				));
+
+		seeAllLink.click();
+		productPagePojo.getSortByMenu();
+
+		List<WebElement> products = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
+				By.className("product-thumb")
+				));
+
+		System.out.println(products);
+
+
+		List<String> productNames = new ArrayList<>();
+
+		for (WebElement product : products) {
+			// Assuming product name is inside <div class="caption"><a>Product Name</a></div>
+			WebElement nameElement = product.findElement(By.xpath(".//div[@class='caption']//a"));
+			productNames.add(nameElement.getText().trim());
+		}
+
+		System.out.println("Product Names: " + productNames);
+
+		// Create a copy and sort it
+		List<String> sortedNames = new ArrayList<>(productNames);
+		Collections.sort(productNames, String.CASE_INSENSITIVE_ORDER);
+		System.out.println(sortedNames);
+
+		Assert.assertTrue(productNames.equals(sortedNames));
+
+
+	}
+
+	@Ignore
+	@Test
+	public void TC011() throws InterruptedException {
 		// Test: Check if clicking on a product image navigates to the product detail page.
 
 		List<WebElement> navBarElements = productPagePojo.getNavBarElements();
@@ -106,7 +154,7 @@ public class TS033 extends BaseClass {
 					product.findElement(By.xpath(".//div[contains(@class, 'image')]"))
 					));
 			image.click();
-        	Thread.sleep(1000);
+			Thread.sleep(1000);
 			String currentUrl = driver.getCurrentUrl();
 			Assert.assertTrue(currentUrl.contains("https://awesomeqa.com/ui/index.php?route=product/product&path=20"));
 			Thread.sleep(1000);
@@ -115,16 +163,12 @@ public class TS033 extends BaseClass {
 		}
 
 
-		
+
 
 	}
 
 
-	@Ignore
-	@Test
-	public void TC011() {
-		// Test: Check if clicking on a product image navigates to the product detail page.
-	}
+
 
 	@Ignore
 	@Test
